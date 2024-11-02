@@ -1,16 +1,31 @@
 program adventCode1
     implicit none
-    character(len=1000), allocatable :: s
-    integer :: i, p, first, last, num, res, numLines
+    character(len=1000), allocatable :: s(:)
+    integer :: i, p, first, last, num, res, numLines, unit, ios
     res = 0
+    unit = 10
 
-    do i = 1, 4
-        read(*,*) s(i:i)
-    end do
+    open(unit, file='input.txt', status='old', action='read', iostat=ios)
 
     numLines = 0
 
-    do i = 1, 4
+    do
+        read(unit, '(A)', iostat=ios)
+        if (ios /= 0) exit
+        numLines = numLines + 1
+    end do 
+
+    allocate(s(numLines))
+
+    rewind(unit)
+
+    do i = 1, numLines
+        read(unit, '(A)', iostat=ios) s(i:i)
+    end do
+
+    close(unit)
+
+    do i = 1, numLines
         last = -1
         first = -1
         do p = 1, len_trim(s(i))
