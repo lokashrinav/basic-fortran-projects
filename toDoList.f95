@@ -39,7 +39,7 @@ program toDoList
         elseif(ex == 3) then
             write(*,'(A)', advance='No') "Please enter the index of the task you'd like complete(1-index): "
             read(*,*) index
-            taskArr(index)%complete = .FALSE.
+            tasksArr(index)%complete = .FALSE.
         elseif(ex == 4) then
             write(*,'(A)', advance='No') "Please enter the index of the task you'd like deleted(1-index): "
             read(*,*) del
@@ -56,14 +56,16 @@ program toDoList
                 read(*,*) changedItem
                 write(*,'(A)', advance='No') "What is the index?: "
                 read(*,*) index
-                taskArr(index)%taskName = changedItem
-            elseif(s .eq "dayToComplete:") then
+                tasksArr(index)%taskName = changedItem
+            elseif(s .eq. "dayToComplete") then
                 write(*,'(A)', advance='No') "What would you like to change it into?: "
                 read(*,*) changedItem
                 write(*,'(A)', advance='No') "What is the index?: "
                 read(*,*) index
-                taskArr(index)%dayToComplete = changedItem
+                tasksArr(index)%dayToComplete = changedItem
             end if
+        else if(ex == 6) then
+            write(*,*) "Happy Halloween"
         elseif(ex == 7) then 
             stop
         end if
