@@ -10,6 +10,7 @@ program toDoList
     integer :: del
     integer :: index
     type(task) :: newTask
+    character(len=1000) :: s, changedItem
     character(len=1000) :: tOrf
     numTasks = 0
     allocate(tasksArr(numTasks))
@@ -47,6 +48,22 @@ program toDoList
             tempTaskArr(1:(numTasks-1)) = tasksArr((del+1):numTasks)
             numTasks = numTasks - 1
             call move_alloc(tempTaskArr, tasksArr)
+        elseif(ex == 5) then
+            write(*,'(A)', advance='No') "Would you like to change the taskName or dayToComplete?: "
+            read(*,*) s
+            if(s .eq. "taskName") then
+                write(*,'(A)', advance='No') "What would you like to change it into?: "
+                read(*,*) changedItem
+                write(*,'(A)', advance='No') "What is the index?: "
+                read(*,*) index
+                taskArr(index)%taskName = changedItem
+            elseif(s .eq "dayToComplete:") then
+                write(*,'(A)', advance='No') "What would you like to change it into?: "
+                read(*,*) changedItem
+                write(*,'(A)', advance='No') "What is the index?: "
+                read(*,*) index
+                taskArr(index)%dayToComplete = changedItem
+            end if
         elseif(ex == 7) then 
             stop
         end if
