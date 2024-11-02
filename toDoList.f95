@@ -28,8 +28,8 @@ program toDoList
             tempTaskArr(numTasks) = newTask
             call move_alloc(tempTaskArr, taskArr)
         elseif(ex == 2) then
-            do i=0, numTasks
-                
+            do i=1, numTasks
+                write(*,'(A, A, A, A)') "Task: ", tasksArr(i)%taskName, "Day To Be Completed: ", tasksArr(i)%dayToComplete
             end do
         elseif(ex == 7) then 
             stop
@@ -41,10 +41,18 @@ task function first
     type :: task
         character(len=1000) :: taskName
         character(len=1000) :: dayToComplete
+        logical :: complete
     end type task
     type(task) :: newTask
+    character(len=1000) :: tOrf
     write(*,'(A)', advance='No') "Please enter the name of the task you'd like to add: "
     read(*,*) newTask%taskName
     write(*,'(A)', advance='No') "Which day of the week you plan to complete it?: " 
     read(*,*) newTask%dayToComplete
+    write(*,'(A)', advance='No') "Is it Complete? True or False: "
+    read(*,*) tOrF
+    if(tOrF .eq. "True") then
+        newTask%complete = .TRUE.
+    elseif(tOrF .eq. "False") then
+        newTask%complete = .FALSE.
 end function newTask
