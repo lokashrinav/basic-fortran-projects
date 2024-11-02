@@ -5,7 +5,7 @@ program toDoList
         character(len=1000) :: taskName
         character(len=1000) :: dayToComplete
     end type task
-    type(task), allocatable = taskArr(:), tempTaskArr(:)
+    type(task), allocatable = tasksArr(:), tempTaskArr(:)
     type(task) :: newTask
     numTasks = 0
     allocate(tasksArr(numTasks))
@@ -24,13 +24,22 @@ program toDoList
             newTask = first()
             numTasks = numTasks + 1
             allocate(tempTaskArr(numTasks))
-            tempTaskArr(1:(numTasks - 1)) = taskArr
+            tempTaskArr(1:(numTasks - 1)) = tasksArr
             tempTaskArr(numTasks) = newTask
-            call move_alloc(tempTaskArr, taskArr)
+            call move_alloc(tempTaskArr, tasksArr)
         elseif(ex == 2) then
             do i=1, numTasks
                 write(*,'(A, A, A, A)') "Task: ", tasksArr(i)%taskName, "Day To Be Completed: ", tasksArr(i)%dayToComplete
             end do
+        elseif(ex == 4) then
+            integer :: del
+            write(*,'(A)', advance='No') "Please enter the index of the task you'd like deleted(1-index)"
+            read(*,*) del
+            allocate(tempTaskArr(numTasks - 1))
+            tempTaskArr(1:(del - 1)) = tasksArr(1:(del-1))
+            tempTaskArr(1:(numTasks-1)) = tasksArr((del+1):numTasks)
+            numTasks = numTasks - 1
+            call move_alloc(tempTaskArr, tasksArr)
         elseif(ex == 7) then 
             stop
         end if
