@@ -4,9 +4,13 @@ program toDoList
     type :: task
         character(len=1000) :: taskName
         character(len=1000) :: dayToComplete
+        logical :: complete
     end type task
-    type(task), allocatable = tasksArr(:), tempTaskArr(:)
+    type(task), allocatable :: tasksArr(:), tempTaskArr(:)
+    integer :: del
+    integer :: index
     type(task) :: newTask
+    character(len=1000) :: tOrf
     numTasks = 0
     allocate(tasksArr(numTasks))
     do 
@@ -29,11 +33,14 @@ program toDoList
             call move_alloc(tempTaskArr, tasksArr)
         elseif(ex == 2) then
             do i=1, numTasks
-                write(*,'(A, A, A, A)') "Task: ", tasksArr(i)%taskName, "Day To Be Completed: ", tasksArr(i)%dayToComplete
+                write(*,'(A, A, A, A)') "Task: ", (tasksArr(i)%taskName), "Day To Be Completed: ", (tasksArr(i)%dayToComplete)
             end do
+        elseif(ex == 3) then
+            write(*,'(A)', advance='No') "Please enter the index of the task you'd like complete(1-index): "
+            read(*,*) index
+            taskArr(index)%complete = .FALSE.
         elseif(ex == 4) then
-            integer :: del
-            write(*,'(A)', advance='No') "Please enter the index of the task you'd like deleted(1-index)"
+            write(*,'(A)', advance='No') "Please enter the index of the task you'd like deleted(1-index): "
             read(*,*) del
             allocate(tempTaskArr(numTasks - 1))
             tempTaskArr(1:(del - 1)) = tasksArr(1:(del-1))
@@ -44,24 +51,20 @@ program toDoList
             stop
         end if
     end do
+contains
+    function first() result(newTask)
+        type(task) :: newTask
+        character(len=1000) :: tOrf
+        write(*,'(A)', advance='No') "Please enter the name of the task you'd like to add: "
+        read(*,*) newTask%taskName
+        write(*,'(A)', advance='No') "Which day of the week you plan to complete it?: " 
+        read(*,*) newTask%dayToComplete
+        write(*,'(A)', advance='No') "Is it Complete? True or False: "
+        read(*,*) tOrF
+        if(tOrF .eq. "True") then
+            newTask%complete = .TRUE.
+        elseif(tOrF .eq. "False") then
+            newTask%complete = .FALSE.
+        end if
+    end function first
 end program toDoList
-
-task function first
-    type :: task
-        character(len=1000) :: taskName
-        character(len=1000) :: dayToComplete
-        logical :: complete
-    end type task
-    type(task) :: newTask
-    character(len=1000) :: tOrf
-    write(*,'(A)', advance='No') "Please enter the name of the task you'd like to add: "
-    read(*,*) newTask%taskName
-    write(*,'(A)', advance='No') "Which day of the week you plan to complete it?: " 
-    read(*,*) newTask%dayToComplete
-    write(*,'(A)', advance='No') "Is it Complete? True or False: "
-    read(*,*) tOrF
-    if(tOrF .eq. "True") then
-        newTask%complete = .TRUE.
-    elseif(tOrF .eq. "False") then
-        newTask%complete = .FALSE.
-end function newTask
