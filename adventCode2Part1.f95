@@ -1,7 +1,7 @@
 program adventCode2Part1
     implicit none
     character(len=1000), allocatable :: s(:)
-    character(len=1000) :: afterColon, beforeColon, color, gameString, game, line
+    character(len=1000) :: afterColon, beforeColon, color, gameString, line
     integer :: ios, unit, pos, numLines, i, p, count, number, gameNum, sum
     logical :: idk
     sum = 0
@@ -23,11 +23,13 @@ program adventCode2Part1
         read(unit, '(A)', iostat=ios) s(i)
     end do
 
-    do p=1, 1
+    close(unit)
+
+    do p=1, numLines
         pos = index(s(p), ":")
         idk = .true.
         gameString = trim(s(p)(1:pos))
-        read(gameString, *, iostat=ios) gameNum
+        read(gameString, *, iostat=ios) gameString, gameNum
         afterColon = trim(s(p)(pos+1:))
         count = 0
         do i=1, len_trim(afterColon)
@@ -36,17 +38,15 @@ program adventCode2Part1
             end if
         end do
         do i=1, count+1
-            if(index(afterColon, ",") == -1) then 
+            if(index(afterColon, ",") == 0) then 
                 pos = index(afterColon, ";")
-            elseif(index(afterColon, ';') == -1) then 
+            elseif(index(afterColon, ';') == 0) then 
                 pos = index(afterColon, ",")
             else
-                write(*,*) afterColon   
                 pos = min(index(afterColon, ","), index(afterColon, ";"))
             end if
             beforeColon = trim(afterColon(2:pos-1))
             afterColon = trim(afterColon(pos+1:len_trim(afterColon)))
-            write(*,*) beforeColon, afterColon   
             read(beforeColon, *, iostat=ios) number, color
             if(color .eq. "blue" .and. number .gt. 14) then
                 idk = .false.
@@ -56,6 +56,7 @@ program adventCode2Part1
                 idk = .false.
             end if
         end do
+        write(*,*) sum
         if(idk) then
             sum = sum + gameNum
         end if
