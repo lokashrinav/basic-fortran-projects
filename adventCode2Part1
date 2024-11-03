@@ -1,4 +1,37 @@
 program adventCode2Part1
+    character(len=1000), allocatable :: s(:)
+    character(len=1000) :: afterColon
+    integer :: ios, unit, numLines, i
+    unit = 10
+
+    open(unit, file='input.txt', status='old', action='read', iostat=ios)
+    numLines = 0
+
+    do
+        read(unit, '(A)', iostat=ios) 
+        if(ios /= 0) exit
+        numLines = numLines + 1
+    end do
+
+    rewind(unit)
+    allocate(character(len=1000) :: s(numLines))
+
+
+    do i=0, numLines
+        read(unit, '(A)', iostat=ios) s(i)
+        if(ios /= 0) exit
+    end do
+
+    do i=1, numLines
+        pos = index(s(i), ":")
+        afterColon = trim(line(pos+1:))
+        do i=1, len_trim(afterColon)
+            
+        end do
+
+    end do
+
+
     
     
 end program adventCode2Part1
