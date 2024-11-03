@@ -20,7 +20,7 @@ program adventCode1
     rewind(unit)
 
     do i = 1, numLines
-        read(unit, '(A)', iostat=ios) s(i:i)
+        read(unit, '(A)', iostat=ios) s(i)
     end do
 
     close(unit)
